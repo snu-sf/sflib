@@ -11,7 +11,7 @@
 (** Symbols starting with [vlib__] are internal. *)
 
 Require Import Bool Arith ZArith String Program.
-Require Export paconotation newtac.
+(* Require Export paconotation newtac. *)
 
 Set Implicit Arguments.
 
@@ -123,29 +123,29 @@ Ltac vauto :=
   (clarify; try edone; 
    try (econstructor (solve [edone | econstructor (edone) ]))).
 
-Ltac inv x := move x at bottom; inversion x; clarify.
+Ltac hinv x := move x at bottom; inversion x; clarify.
 
-Tactic Notation "inv" ident(a) :=
-  (inv a).
-Tactic Notation "inv" ident(a) ident(b) :=
-  (inv a; inv b).
-Tactic Notation "inv" ident(a) ident(b) ident(c) :=
-  (inv a; inv b c).
-Tactic Notation "inv" ident(a) ident(b) ident(c) ident(d) := 
-  (inv a b; inv c d).
+Tactic Notation "hinv" ident(a) :=
+  (hinv a).
+Tactic Notation "hinv" ident(a) ident(b) :=
+  (hinv a; hinv b).
+Tactic Notation "hinv" ident(a) ident(b) ident(c) :=
+  (hinv a; hinv b c).
+Tactic Notation "hinv" ident(a) ident(b) ident(c) ident(d) := 
+  (hinv a b; hinv c d).
 
-Ltac invc x := inv x; clear x.
+Ltac hinvc x := hinv x; clear x.
 
-Tactic Notation "invc" ident(a) :=
-  (invc a).
-Tactic Notation "invc" ident(a) ident(b) :=
-  (invc a; invc b).
-Tactic Notation "invc" ident(a) ident(b) ident(c) :=
-  (invc a; invc b c).
-Tactic Notation "invc" ident(a) ident(b) ident(c) ident(d) := 
-  (invc a b; invc c d).
-Tactic Notation "invc" ident(a) ident(b) ident(c) ident(d) ident(e) := 
-  (invc a b c; invc d e).
+Tactic Notation "hinvc" ident(a) :=
+  (hinvc a).
+Tactic Notation "hinvc" ident(a) ident(b) :=
+  (hinvc a; hinvc b).
+Tactic Notation "hinvc" ident(a) ident(b) ident(c) :=
+  (hinvc a; hinvc b c).
+Tactic Notation "hinvc" ident(a) ident(b) ident(c) ident(d) := 
+  (hinvc a b; hinvc c d).
+Tactic Notation "hinvc" ident(a) ident(b) ident(c) ident(d) ident(e) := 
+  (hinvc a b c; hinvc d e).
 
 Ltac simpls  := simpl in *; try done.
 Ltac ins := simpl in *; try done; intros.
@@ -919,7 +919,7 @@ Tactic Notation "safe" tactic(tac) :=
 Ltac ren H :=
   let X := fresh H in rename H into X.
 
-(** Instantiate consecutive evars. *)
-Tactic Notation "insts" constr(terms) :=
-  Hdo (fun x => instantiate (1 := x)) terms.
-(* TODO this is not very useful after all *)
+(* (** Instantiate consecutive evars. *) *)
+(* Tactic Notation "insts" constr(terms) := *)
+(*   Hdo (fun x => instantiate (1 := x)) terms. *)
+(* (* TODO this is not very useful after all *) *)
