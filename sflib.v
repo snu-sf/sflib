@@ -1,6 +1,7 @@
 (* *********************************************************************)
 (*                                                                     *)
-(*                   Viktor and Gil's lemmas & tactic                  *)
+(*           Software Foundations Laboratory's Lemmas & Tactic         *)
+(*               based on Viktor and Gil's lemmas & tactic             *)
 (*                                                                     *)
 (* *********************************************************************)
 
@@ -8,7 +9,7 @@
     proof automation, structuring large proofs, or rewriting.  Most of 
     the rewriting support is ported from ss-reflect. *)
 
-(** Symbols starting with [vlib__] are internal. *)
+(** Symbols starting with [sflib__] are internal. *)
 
 Require Import Bool Arith ZArith String Program.
 (* Require Export paconotation newtac. *)
@@ -33,19 +34,19 @@ Notation "f <*> g" := (compose f g) (at level 49, left associativity).
 Coercion is_true (b : bool) : Prop := b = true.
 
 (** Hints for auto *)
-Lemma vlib__true_is_true : true.
+Lemma sflib__true_is_true : true.
 Proof. reflexivity. Qed.
 
-Lemma vlib__not_false_is_true : ~ false.
+Lemma sflib__not_false_is_true : ~ false.
 Proof. discriminate. Qed.
 
-Lemma vlib__negb_rewrite: forall {b}, negb b -> b = false.
+Lemma sflib__negb_rewrite: forall {b}, negb b -> b = false.
 Proof. intros []; (reflexivity || discriminate). Qed.
 
-Lemma vlib__andb_split: forall {b1 b2}, b1 && b2 -> b1 /\ b2.
+Lemma sflib__andb_split: forall {b1 b2}, b1 && b2 -> b1 /\ b2.
 Proof. intros [] []; try discriminate; auto. Qed.
 
-Hint Resolve vlib__true_is_true vlib__not_false_is_true.
+Hint Resolve sflib__true_is_true sflib__not_false_is_true.
 
 (* ************************************************************************** *)
 (** * Basic automation tactics *)
@@ -57,32 +58,32 @@ Create HintDb vlib discriminated.
 
 (** Adaptation of the ss-reflect "[done]" tactic. *)
 
-Ltac vlib__basic_done := 
+Ltac sflib__basic_done := 
   solve [trivial with vlib | apply sym_equal; trivial | discriminate | contradiction].
 
 Ltac done := unfold not in *; trivial with vlib; hnf; intros;
-  solve [try vlib__basic_done; split; 
-         try vlib__basic_done; split; 
-         try vlib__basic_done; split; 
-         try vlib__basic_done; split; 
-         try vlib__basic_done; split; vlib__basic_done
+  solve [try sflib__basic_done; split; 
+         try sflib__basic_done; split; 
+         try sflib__basic_done; split; 
+         try sflib__basic_done; split; 
+         try sflib__basic_done; split; sflib__basic_done
     | match goal with H : ~ _ |- _ => solve [case H; trivial] end].
 
 (** A variant of the ssr "done" tactic that performs "eassumption". *)
 
 Ltac edone := try eassumption; trivial; hnf; intros;
-  solve [try eassumption; try vlib__basic_done; split; 
-         try eassumption; try vlib__basic_done; split; 
-         try eassumption; try vlib__basic_done; split; 
-         try eassumption; try vlib__basic_done; split; 
-         try eassumption; try vlib__basic_done; split;
-         try eassumption; vlib__basic_done
+  solve [try eassumption; try sflib__basic_done; split; 
+         try eassumption; try sflib__basic_done; split; 
+         try eassumption; try sflib__basic_done; split; 
+         try eassumption; try sflib__basic_done; split; 
+         try eassumption; try sflib__basic_done; split;
+         try eassumption; sflib__basic_done
     | match goal with H : ~ _ |- _ => solve [case H; trivial] end].
 
 Tactic Notation "by"  tactic(tac) := (tac; done).
 Tactic Notation "eby" tactic(tac) := (tac; edone).
 
-Ltac vlib__complaining_inj f H :=
+Ltac sflib__complaining_inj f H :=
   let X := fresh in
   (match goal with | [|- ?P ] => set (X := P) end);
   injection H;
@@ -91,30 +92,30 @@ Ltac vlib__complaining_inj f H :=
   subst X;
   try subst.
 
-Ltac vlib__clarify1 :=
+Ltac sflib__clarify1 :=
   try subst;
   repeat match goal with
-  | [H: is_true (andb _ _) |- _] => case (vlib__andb_split H); clear H; intros ? H
-  | [H: is_true (negb ?x) |- _] => rewrite (vlib__negb_rewrite H) in *
+  | [H: is_true (andb _ _) |- _] => case (sflib__andb_split H); clear H; intros ? H
+  | [H: is_true (negb ?x) |- _] => rewrite (sflib__negb_rewrite H) in *
   | [H: is_true ?x        |- _] => rewrite H in *
   | [H: ?x = true         |- _] => rewrite H in *
   | [H: ?x = false        |- _] => rewrite H in *
-  | [H: ?f _             = ?f _             |- _] => vlib__complaining_inj f H
-  | [H: ?f _ _           = ?f _ _           |- _] => vlib__complaining_inj f H
-  | [H: ?f _ _ _         = ?f _ _ _         |- _] => vlib__complaining_inj f H
-  | [H: ?f _ _ _ _       = ?f _ _ _ _       |- _] => vlib__complaining_inj f H
-  | [H: ?f _ _ _ _ _     = ?f _ _ _ _ _     |- _] => vlib__complaining_inj f H
-  | [H: ?f _ _ _ _ _ _   = ?f _ _ _ _ _ _   |- _] => vlib__complaining_inj f H
-  | [H: ?f _ _ _ _ _ _ _ = ?f _ _ _ _ _ _ _ |- _] => vlib__complaining_inj f H
+  | [H: ?f _             = ?f _             |- _] => sflib__complaining_inj f H
+  | [H: ?f _ _           = ?f _ _           |- _] => sflib__complaining_inj f H
+  | [H: ?f _ _ _         = ?f _ _ _         |- _] => sflib__complaining_inj f H
+  | [H: ?f _ _ _ _       = ?f _ _ _ _       |- _] => sflib__complaining_inj f H
+  | [H: ?f _ _ _ _ _     = ?f _ _ _ _ _     |- _] => sflib__complaining_inj f H
+  | [H: ?f _ _ _ _ _ _   = ?f _ _ _ _ _ _   |- _] => sflib__complaining_inj f H
+  | [H: ?f _ _ _ _ _ _ _ = ?f _ _ _ _ _ _ _ |- _] => sflib__complaining_inj f H
   end; try done.
 
 (** Perform injections & discriminations on all hypotheses *)
 
 Ltac clarify :=
-  vlib__clarify1;
+  sflib__clarify1;
   repeat match goal with
-    | H1: ?x = Some _, H2: ?x = None   |- _ => rewrite H2 in H1; vlib__clarify1
-    | H1: ?x = Some _, H2: ?x = Some _ |- _ => rewrite H2 in H1; vlib__clarify1
+    | H1: ?x = Some _, H2: ?x = None   |- _ => rewrite H2 in H1; sflib__clarify1
+    | H1: ?x = Some _, H2: ?x = Some _ |- _ => rewrite H2 in H1; sflib__clarify1
   end.
 
 (** Kill simple goals that require up to two econstructor calls. *)
@@ -160,16 +161,16 @@ Tactic Notation "case_eq" constr(x) "as" simple_intropattern(H) :=
 (** * Basic simplication tactics *)
 (* ************************************************************************** *)
 
-Ltac vlib__clarsimp1 :=
+Ltac sflib__clarsimp1 :=
   clarify; (autorewrite with vlib in * ); try done;
   match goal with
-  | [H: is_true ?x |- _] => rewrite H in *; vlib__clarsimp1
-  | [H: ?x = true |- _] => rewrite H in *; vlib__clarsimp1
-  | [H: ?x = false |- _] => rewrite H in *; vlib__clarsimp1
+  | [H: is_true ?x |- _] => rewrite H in *; sflib__clarsimp1
+  | [H: ?x = true |- _] => rewrite H in *; sflib__clarsimp1
+  | [H: ?x = false |- _] => rewrite H in *; sflib__clarsimp1
   | _ => clarify; auto 1 with vlib
   end.
 
-Ltac clarsimp := intros; simpl in *; vlib__clarsimp1.
+Ltac clarsimp := intros; simpl in *; sflib__clarsimp1.
 
 Ltac autos   := clarsimp; auto with vlib.
 
@@ -229,7 +230,7 @@ Ltac desc :=
       match p with | NW _ => red in x' | _ => idtac end;
       match q with | NW _ => red in y' | _ => idtac end
     | H : is_true (_ && _) |- _ =>
-          let H' := fresh H in case (vlib__andb_split H); clear H; intros H H'
+          let H' := fresh H in case (sflib__andb_split H); clear H; intros H H'
     | H : ?x = ?x   |- _ => clear H
   end.
 
@@ -431,7 +432,7 @@ Tactic Notation "dup" hyp(H) :=
 
 Ltac clarassoc := clarsimp; autorewrite with vlib vlibA in *; try done. 
 
-Ltac vlib__hacksimp1 :=
+Ltac sflib__hacksimp1 :=
    clarsimp;
    match goal with
      | H: _ |- _ => solve [rewrite H; clear H; clarsimp
@@ -444,7 +445,7 @@ Ltac hacksimp :=
    try match goal with
    | H: _ |- _ => solve [rewrite H; clear H; clarsimp
                               |rewrite <- H; clear H; clarsimp]
-   | |- context[if ?p then _ else _] => solve [destruct p; vlib__hacksimp1]
+   | |- context[if ?p then _ else _] => solve [destruct p; sflib__hacksimp1]
    | _ => solve [f_equal; clarsimp]
    end.
 
