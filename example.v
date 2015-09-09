@@ -34,7 +34,6 @@ Qed.
 Goal exists x, x * 3 = 6.
 Proof. by exists 2. (* by X = X; done *) Qed.
 
-
 (** inv & hinv: inversion *)
 Module Example_Inv.
   Inductive p: forall (n:nat), Prop :=
@@ -47,4 +46,113 @@ Module Example_Inv.
   Qed.
 End Example_Inv.
 
-(* TODO: remaining *)
+(** simpls, ins *)
+Goal (2 * 3 = 5 \/ 3 * 4 = 11 -> 4 * 5 = 19).
+Proof. simpls.
+Restart. ins. destruct H. inv H. inv H.
+Qed.
+
+(** <<x:X>>, des, splits *)
+Module Example_Des.
+  Variable (P Q R:Prop).
+
+  Goal <<PQ: P -> Q>> /\ <<QR: Q -> R>> -> <<PR: P -> R>>.
+  Proof.
+    i. des. auto.
+  Qed.
+
+  Goal <<PR: P -> R>> /\ <<QR: Q -> R>> ->
+       (<<p: P>> \/ <<q: Q>>) -> R.
+  Proof.
+    i. des. auto. auto.
+  Qed.
+
+  Goal <<PQ: P -> Q>> /\ <<PR: P -> R>> ->
+       <<p: P>> ->
+       <<q: Q>> /\ <<r: R>>.
+  Proof.
+    i. des. splits. auto. auto. (* cf: esplits *)
+  Qed.
+End Example_Des.
+
+(** case tacticals *)
+Goal True.
+Proof.
+  destruct (Even.even_odd_dec 3).
+  - destruct (Even.even_odd_dec 4).
+    + destruct (Even.even_odd_dec 5).
+      * auto.
+      * auto.
+    + auto.          
+  - auto.
+Qed.
+
+(** exploit, hexploit: they are similar; if you are stuck with one tactic, try another. *)
+Module Example_Exploit.
+  Variable (P Q R:Prop).
+
+  Goal <<PQ: P -> Q>> /\ <<QR: Q -> R>> -> <<PR: P -> R>>.
+  Proof. ii. des. exploit PQ. auto. auto.
+  Restart. ii. des. hexploit PQ. auto. auto.
+  Qed.
+End Example_Exploit.
+
+(** destructs **)
+Goal forall (n m:nat), True.
+Proof. i. destructs n m. auto. auto. auto. auto.
+Restart. i. edestructs n m. auto. auto. auto. auto. (* evariable version *)
+Restart. i. depdes n m. auto. auto. auto. auto. (* dependent destruction version *)
+Qed.
+
+(** depgen: generalize dependent *)
+Goal forall n:nat, True.
+Proof. i. depgen n. auto. Qed.
+
+(** mark *)
+Module Example_Mark.
+  Variable (P Q R:Prop).
+
+  Goal <<PQ: P -> Q>> /\ <<QR: Q -> R>> -> <<PR: P -> R>>.
+  Proof.
+    ii. des.
+    exploit PQ; [M|]; Mdo auto.
+  Restart.
+    ii. des.
+    exploit PQ; [M|]; Mskip auto.
+  Abort.
+End Example_Mark.
+
+(** revert_until *)
+Goal forall (n m p q r:nat), True.
+Proof. i. revert_until p. Abort.
+
+(** eadmit *)
+Goal exists m:nat, m + 1 = 2.
+Proof.
+  eexists. eadmit.
+Grab Existential Variables.
+  admit.
+Qed.
+
+Module Example_Guard.
+  Variable (P Q R:Prop).
+
+  Goal <<PQ: P -> Q>> /\ <<QR: Q -> R>> -> <<PR: P -> R>>.
+  Proof.
+    i. guardH H. des.
+    unguardH H. des.
+    auto.
+  Restart.
+    i. guard. des. (* guard all *)
+    unguard. des. (* unguard all *)
+    auto.
+  Restart.
+    i. guard. desH H. (* des in spite of guard *)
+    auto.
+  Restart.
+    i. guard (P -> Q) in H. desH H.
+  Restart.
+    i. sguard (P -> Q) in H. desH H. (* "super" guard *)
+    auto.
+  Qed.
+End Example_Guard.
