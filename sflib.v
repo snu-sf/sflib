@@ -7,19 +7,18 @@
 
 (** This file collects a number of basic lemmas and tactics for better
     proof automation, structuring large proofs, or rewriting.  Most of 
-    the rewriting support is ported from ss-reflect. *)
+    the rewriting support is ported from ssreflect. *)
 
 (** Symbols starting with [sflib__] are internal. *)
 
-Require Import Bool Arith ZArith String Program.
+Require Import Bool List Arith ZArith String Program.
 (* Require Export paconotation newtac. *)
 
 Set Implicit Arguments.
 
 Hint Unfold not iff id.
 
-Notation " [ x ] " := (cons x nil) : list_scope.
-Notation " [ x ; .. ; y ] " := (cons x .. (cons y nil) ..) : list_scope.
+Export ListNotations.
 
 Notation "~ x" := (forall (FH: x), False) : type_scope.
 
@@ -54,14 +53,14 @@ Hint Resolve sflib__true_is_true sflib__not_false_is_true.
 
 (** Set up for basic simplification *)
 
-Create HintDb vlib discriminated. 
+Create HintDb sflib discriminated. 
 
 (** Adaptation of the ss-reflect "[done]" tactic. *)
 
 Ltac sflib__basic_done := 
-  solve [trivial with vlib | apply sym_equal; trivial | discriminate | contradiction].
+  solve [trivial with sflib | apply sym_equal; trivial | discriminate | contradiction].
 
-Ltac done := unfold not in *; trivial with vlib; hnf; intros;
+Ltac done := unfold not in *; trivial with sflib; hnf; intros;
   solve [try sflib__basic_done; split; 
          try sflib__basic_done; split; 
          try sflib__basic_done; split; 
@@ -124,6 +123,9 @@ Ltac vauto :=
   (clarify; try edone; 
    try (econstructor (solve [edone | econstructor (edone) ]))).
 
+(* from CompCert-2.4/lib/Coqlib.v *)
+Ltac inv H := inversion H; clear H; subst.
+
 Ltac hinv x := move x at bottom; inversion x; clarify.
 
 Tactic Notation "hinv" ident(a) :=
@@ -162,17 +164,17 @@ Tactic Notation "case_eq" constr(x) "as" simple_intropattern(H) :=
 (* ************************************************************************** *)
 
 Ltac sflib__clarsimp1 :=
-  clarify; (autorewrite with vlib in * ); try done;
+  clarify; (autorewrite with sflib in * ); try done;
   match goal with
   | [H: is_true ?x |- _] => rewrite H in *; sflib__clarsimp1
   | [H: ?x = true |- _] => rewrite H in *; sflib__clarsimp1
   | [H: ?x = false |- _] => rewrite H in *; sflib__clarsimp1
-  | _ => clarify; auto 1 with vlib
+  | _ => clarify; auto 1 with sflib
   end.
 
 Ltac clarsimp := intros; simpl in *; sflib__clarsimp1.
 
-Ltac autos   := clarsimp; auto with vlib.
+Ltac autos   := clarsimp; auto with sflib.
 
 (* hdesH, hdes: more general des *)
 
@@ -430,7 +432,7 @@ Tactic Notation "dup" hyp(H) :=
 (* Tactic Notation "dup" hyp(H) tactic(tac) := *)
 (*   let H' := fresh H in assert (H' := H); tac H'. *)
 
-Ltac clarassoc := clarsimp; autorewrite with vlib vlibA in *; try done. 
+Ltac clarassoc := clarsimp; autorewrite with sflib sflibA in *; try done. 
 
 Ltac sflib__hacksimp1 :=
    clarsimp;
