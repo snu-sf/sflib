@@ -119,10 +119,6 @@ Ltac clarify :=
 
 (** Kill simple goals that require up to two econstructor calls. *)
 
-Ltac vauto :=
-  (clarify; try edone; 
-   try (econstructor (solve [edone | econstructor (edone) ]))).
-
 (* from CompCert-2.4/lib/Coqlib.v *)
 Ltac inv H := inversion H; clear H; subst.
 

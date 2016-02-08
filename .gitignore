@@ -1,6 +1,7 @@
-*.v.d
-*.vo
-*.glob
-
+_CoqProject
 Makefile.coq
-doc
+
+.*.aux
+*.vo
+*.v.d
+*.glob

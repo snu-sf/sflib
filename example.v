@@ -6,7 +6,7 @@
 (* *********************************************************************)
 
 (** This file contains example usages of sflib. *)
-Require Import "./sflib".
+Require Import sflib.
 
 (** list notations *)
 Check [1].
@@ -75,18 +75,6 @@ Module Example_Des.
   Qed.
 End Example_Des.
 
-(** case tacticals *)
-Goal True.
-Proof.
-  destruct (Even.even_odd_dec 3).
-  - destruct (Even.even_odd_dec 4).
-    + destruct (Even.even_odd_dec 5).
-      * auto.
-      * auto.
-    + auto.          
-  - auto.
-Qed.
-
 (** exploit, hexploit: they are similar; if you are stuck with one tactic, try another. *)
 Module Example_Exploit.
   Variable (P Q R:Prop).
@@ -132,7 +120,7 @@ Proof.
   eexists. eadmit.
 Grab Existential Variables.
   admit.
-Qed.
+Admitted.
 
 Module Example_Guard.
   Variable (P Q R:Prop).

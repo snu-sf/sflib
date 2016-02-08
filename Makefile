@@ -1,22 +1,20 @@
-VS           := $(wildcard *.v)
-IS           := $(sort $(subst /, , $(dir $(VS))))
-COQLIBS      := $(addprefix -I ,$(IS))
-MAKECOQ=$(MAKE) -f Makefile.coq COQLIBS="$(COQLIBS)"
-DOC          := doc
+COQMODULE    := sflib
+COQTHEORIES  := *.v
 
-.PHONY: all theories doc clean
+.PHONY: all theories clean
 
 all: theories
 
-Makefile.coq: Makefile $(VS)
-	coq_makefile $(VS) -o Makefile.coq
+Makefile.coq: Makefile $(COQTHEORIES)
+	(echo "-R . $(COQMODULE)"; \
+   echo $(COQTHEORIES)) > _CoqProject
+	coq_makefile -f _CoqProject -o Makefile.coq
 
 theories: Makefile.coq
-	+$(MAKECOQ)
+	$(MAKE) -f Makefile.coq
 
-doc: theories
-	mkdir -p $(DOC)
-	coqdoc $(VS) -d $(DOC)
+%.vo: Makefile.coq
+	$(MAKE) -f Makefile.coq "$@"
 
 clean:
 	$(MAKE) -f Makefile.coq clean
