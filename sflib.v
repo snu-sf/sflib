@@ -20,7 +20,7 @@ Hint Unfold not iff id.
 
 Export ListNotations.
 
-Notation "~ x" := (forall (FH: x), False) : type_scope.
+(* Notation "~ x" := (forall (FH: x), False) : type_scope. *)
 
 (* Function composition *)
 Notation "f <*> g" := (compose f g) (at level 49, left associativity).
