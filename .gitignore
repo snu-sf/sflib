@@ -3,5 +3,6 @@ Makefile.coq
 
 .*.aux
 *.vo
+*.vio
 *.v.d
 *.glob
