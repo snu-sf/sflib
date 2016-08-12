@@ -66,7 +66,7 @@ Ltac done := unfold not in *; trivial with sflib; hnf; intros;
          try sflib__basic_done; split; 
          try sflib__basic_done; split; 
          try sflib__basic_done; split; sflib__basic_done
-    | match goal with H : ~ _ |- _ => solve [case H; trivial] end].
+    | match goal with H : _ -> False |- _ => solve [case H; trivial] end].
 
 (** A variant of the ssr "done" tactic that performs "eassumption". *)
 
