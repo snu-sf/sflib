@@ -923,3 +923,30 @@ Ltac ren H :=
 (* Tactic Notation "insts" constr(terms) := *)
 (*   Hdo (fun x => instantiate (1 := x)) terms. *)
 (* (* TODO this is not very useful after all *) *)
+
+
+
+(** Automation using econstructor.
+    What it does is clear from the definition below. *)
+Tactic Notation "econsby" tactic(tac) :=
+  first [econstructor  1; (by tac)
+        |econstructor  2; (by tac)
+        |econstructor  3; (by tac)
+        |econstructor  4; (by tac)
+        |econstructor  5; (by tac)
+        |econstructor  6; (by tac)
+        |econstructor  7; (by tac)
+        |econstructor  8; (by tac)
+        |econstructor  9; (by tac)
+        |econstructor 10; (by tac)
+        |econstructor 11; (by tac)
+        |econstructor 12; (by tac)
+        |econstructor 13; (by tac)
+        |econstructor 14; (by tac)
+        |econstructor 15; (by tac)
+        |econstructor 16; (by tac)
+        |econstructor 17; (by tac)
+        |econstructor 18; (by tac)
+        |econstructor 19; (by tac)
+        |econstructor 20; (by tac)
+  ].
