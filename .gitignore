@@ -2,9 +2,12 @@ _CoqProject
 Makefile.coq
 .coqdeps.d
 Makefile.coq.conf
+.Makefile.coq.d
 
 .*.aux
 *.vo
 *.vio
+*.vok
+*.vos
 *.v.d
 *.glob
