@@ -54,6 +54,7 @@ Qed.
 
 (** <<x:X>>, des, splits *)
 Module Example_Des.
+Section Example_Des.
   Variable (P Q R:Prop).
 
   Goal <<PQ: P -> Q>> /\ <<QR: Q -> R>> -> <<PR: P -> R>>.
@@ -74,15 +75,18 @@ Module Example_Des.
     i. des. splits. auto. auto. (* cf: esplits *)
   Qed.
 End Example_Des.
+End Example_Des.
 
 (** exploit, hexploit: they are similar; if you are stuck with one tactic, try another. *)
 Module Example_Exploit.
+Section Example_Exploit.
   Variable (P Q R:Prop).
 
   Goal <<PQ: P -> Q>> /\ <<QR: Q -> R>> -> <<PR: P -> R>>.
   Proof. ii. des. exploit PQ. auto. auto.
   Restart. ii. des. hexploit PQ. auto. auto.
   Qed.
+End Example_Exploit.
 End Example_Exploit.
 
 (** destructs **)
@@ -98,6 +102,7 @@ Proof. i. depgen n. auto. Qed.
 
 (** mark *)
 Module Example_Mark.
+Section Example_Mark.
   Variable (P Q R:Prop).
 
   Goal <<PQ: P -> Q>> /\ <<QR: Q -> R>> -> <<PR: P -> R>>.
@@ -109,6 +114,7 @@ Module Example_Mark.
     exploit PQ; [M|]; Mskip auto.
   Abort.
 End Example_Mark.
+End Example_Mark.
 
 (** revert_until *)
 Goal forall (n m p q r:nat), True.
@@ -118,11 +124,12 @@ Proof. i. revert_until p. Abort.
 Goal exists m:nat, m + 1 = 2.
 Proof.
   eexists. eadmit.
-Grab Existential Variables.
+Unshelve.
   admit.
 Admitted.
 
 Module Example_Guard.
+Section Example_Guard.
   Variable (P Q R:Prop).
 
   Goal <<PQ: P -> Q>> /\ <<QR: Q -> R>> -> <<PR: P -> R>>.
@@ -143,4 +150,5 @@ Module Example_Guard.
     i. sguard (P -> Q) in H. desH H. (* "super" guard *)
     auto.
   Qed.
+End Example_Guard.
 End Example_Guard.
