@@ -176,9 +176,9 @@ Ltac autos   := clarsimp; auto with sflib.
 
 Definition  NW A (P: () -> A) : A := P ().
 
-Notation "<< x : t >>" := (NW (fun x => (t):Prop)) (at level 80, x ident, no associativity).
-Notation "<< t >>" := (NW (fun _ => t)) (at level 79, no associativity).
-Notation "<< t >>" := (NW (fun _ => (t):Prop)) (at level 79, no associativity).
+Notation "<< x : t >>" := (NW (fun x => (t):Prop)) (at level 80, x name, no associativity).
+Notation "<< t >>" := (NW (fun _ => t)) (at level 79, no associativity, only printing).
+Notation "<< t >>" := (NW (fun _ => (t):Prop)) (at level 79, no associativity, only printing).
 
 Ltac unnw := unfold NW in *.
 Ltac rednw := red; unnw.
