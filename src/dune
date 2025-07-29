@@ -1,0 +1,6 @@
+(coq.theory
+  (name sflib)
+  (package coq-sflib)
+  (synopsis "A collection of useful Rocq lemmas and tactics")
+  (modules sflib example)
+)

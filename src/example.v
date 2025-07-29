@@ -32,7 +32,7 @@ Proof. done.
 Restart. edone. (* evariable version *)
 Qed.
 Goal exists x, x * 3 = 6.
-Proof. by exists 2. (* by X = X; done *) Qed.
+Proof. sfby exists 2. (* by X = X; done *) Qed.
 
 (** inv & hinv: inversion *)
 Module Example_Inv.
@@ -119,14 +119,6 @@ End Example_Mark.
 (** revert_until *)
 Goal forall (n m p q r:nat), True.
 Proof. i. revert_until p. Abort.
-
-(** eadmit *)
-Goal exists m:nat, m + 1 = 2.
-Proof.
-  eexists. eadmit.
-Unshelve.
-  admit.
-Admitted.
 
 Module Example_Guard.
 Section Example_Guard.

@@ -11,3 +11,7 @@ Makefile.coq.conf
 *.vos
 *.v.d
 *.glob
+
+_opam/
+_build/
+.vscode/
