@@ -1,6 +1,6 @@
 (lang dune 3.8)
 (name coq-sflib)
-(version 2.0.0)
+(version 2.0.1)
 (using coq 0.8)
 
 (source (github snu-sf/sflib))
@@ -19,7 +19,7 @@
  (synopsis "A collection of useful Rocq lemmas and tactics")
  (description "This package provides useful Rocq lemmas and tactics, used at Seoul National University.")
  (depends
-  (coq (= 8.20.0))
+  (coq (>= 8.19.2))
   ocaml
   base
   dune)
