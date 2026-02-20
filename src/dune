@@ -2,5 +2,6 @@
   (name sflib)
   (package coq-sflib)
   (synopsis "A collection of useful Rocq lemmas and tactics")
+  (theories Stdlib)
   (modules sflib example)
 )

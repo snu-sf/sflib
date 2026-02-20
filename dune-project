@@ -1,6 +1,6 @@
 (lang dune 3.8)
 (name coq-sflib)
-(version 2.0.1)
+(version 2.1.0)
 (using coq 0.8)
 
 (source (github snu-sf/sflib))
@@ -12,17 +12,16 @@
   "Yeji Han <yeji.han@sf.snu.ac.kr>"
   "Gil Hur <gil.hur@sf.snu.ac.kr>"
 )
-(maintainers "snu-sf")
+(maintainers "yeji.han@sf.snu.ac.kr")
 
 (package
  (name coq-sflib)
  (synopsis "A collection of useful Rocq lemmas and tactics")
- (description "This package provides useful Rocq lemmas and tactics, used at Seoul National University.")
+ (description "This package provides useful Rocq lemmas and tactics for proof automation and rewriting.")
  (depends
-  (coq (>= 8.19.2))
-  ocaml
-  base
-  dune)
- (maintainers "snu-sf"))
+  (coq (and (>= 9.0) (< 9.2~)))
+  coq-stdlib
+  (dune (>= 3.8)))
+ (maintainers "yeji.han@sf.snu.ac.kr"))
 
 (generate_opam_files true)
