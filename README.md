@@ -1,28 +1,34 @@
 # sflib
-A collection of useful Rocq tactics.
 
-Compatibility: Rocq versions 8.20 and newer.
+A collection of useful Rocq lemmas and tactics for proof automation and rewriting.
+
+## Compatibility
+
+| Branch   | Rocq/Coq version |
+|----------|-------------------|
+| `master` | Rocq >= 9.0       |
+| `8.20`   | Coq >= 8.19.2     |
 
 ## Installation
-You have two options to install sflib:
-
-- Using a Local Clone:
-  ```sh
-  opam install .
-  ```
-
-- From the opam Repository:
-  ```sh
-  opam remote add coq-sflib -k git https://github.com/snu-sf/sf-opam-coq-archive
-  opam install coq-sflib
-  ```
-
-## Build
-After installation, build sflib with:
 
 ```sh
-dune build @install
+git clone https://github.com/snu-sf/sflib.git
+cd sflib
+opam install .
 ```
 
-## For VSCoq
-- Use `make` to create `_CoqProject` file.
+## Usage
+
+```coq
+From sflib Require Import sflib.
+```
+
+## Build
+
+```sh
+dune build
+```
+
+## License
+
+BSD-2-Clause
