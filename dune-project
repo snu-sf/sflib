@@ -19,8 +19,8 @@
  (synopsis "A collection of useful Rocq lemmas and tactics")
  (description "This package provides useful Rocq lemmas and tactics for proof automation and rewriting.")
  (depends
-  (coq (and (>= 9.0) (< 9.2~)))
-  coq-stdlib
+  (coq-core (>= 9.0))
+  rocq-stdlib
   (dune (>= 3.8)))
  (maintainers "yeji.han@sf.snu.ac.kr"))
 
