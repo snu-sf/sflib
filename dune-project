@@ -17,7 +17,7 @@
 (package
  (name coq-sflib)
  (synopsis "A collection of useful Rocq lemmas and tactics")
- (description "This package provides useful Rocq lemmas and tactics, used at Seoul National University.")
+ (description "This package provides useful Rocq lemmas and tactics for proof automation and rewriting.")
  (depends
   (coq (>= 8.19.2))
   ocaml

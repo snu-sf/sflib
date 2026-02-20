@@ -3,7 +3,7 @@ opam-version: "2.0"
 version: "2.0.1"
 synopsis: "A collection of useful Rocq lemmas and tactics"
 description:
-  "This package provides useful Rocq lemmas and tactics, used at Seoul National University."
+  "This package provides useful Rocq lemmas and tactics for proof automation and rewriting."
 maintainer: ["snu-sf"]
 authors: [
   "Jeehoon Kang <jeehoon.kang@kaist.ac.kr>"
